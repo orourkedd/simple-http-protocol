@@ -100,8 +100,8 @@ function safeParseJson (s) {
     return JSON.parse(s)
   } catch (e) {
     //  instead of an empty string,
-    //  pass back an empty object
-    return s || {}
+    //  pass back undefined
+    return s || undefined
   }
 }
 
@@ -146,6 +146,10 @@ function getResponseMeta (httpResponse) {
 }
 
 function isSimpleProtocol (p) {
+  if (!p) {
+    return false
+  }
+
   if (p.success === true && p.payload) {
     return true
   }

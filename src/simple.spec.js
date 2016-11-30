@@ -138,7 +138,7 @@ describe('simple protocol', () => {
 
         validateResult(result, {
           success: true,
-          payload: {},
+          payload: undefined,
           meta: {
             status: 204,
             statusText: 'No Content',
