@@ -1,6 +1,6 @@
 const fetch = require('isomorphic-fetch')
 const { curry, merge, keys } = require('../vendor/ramda')
-const { safep } = require('safe-errors')
+const { safep } = require('./util')
 
 const defaultHeaders = {
   'Content-Type': 'application/json;charset=UTF-8'

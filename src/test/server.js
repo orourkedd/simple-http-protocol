@@ -1,5 +1,4 @@
 const express = require('express')
-const { safecb } = require('safe-errors')
 const bodyParser = require('body-parser')
 
 let stopServer
@@ -41,7 +40,14 @@ function startServer (route) {
         if (err) {
           reject(err)
         } else {
-          stopServer = safecb(server.close, server)
+          stopServer = () => {
+            return new Promise((resolve, reject) => {
+              server.close((err) => {
+                if (err) return reject(err)
+                resolve()
+              })
+            })
+          }
           resolve({
             stopServer,
             getRequestData
