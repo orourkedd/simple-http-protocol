@@ -55,6 +55,18 @@ let result = await remove(fetchOptions, url)
 
 ```
 
+If you don't want `credentials: include` to be on by default:
+
+```
+const { get, post, put, remove} = require('simple-protocol-http').noCredentials
+
+let result = await get(url)
+let result = await post(url, payload)
+let result = await put(url, payload)
+let result = await remove(url)
+
+```
+
 The whole enchilada, i.e. full referential transparency:
 ```
 const { get, post, put, remove} = require('simple-protocol-http').full

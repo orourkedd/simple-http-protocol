@@ -173,6 +173,10 @@ function parseHeaders (httpResponse) {
   }, {})
 }
 
+const noCredentials = {
+  credentials: undefined
+}
+
 module.exports = {
   full: {
     post: curry(post),
@@ -185,6 +189,12 @@ module.exports = {
     get: curry(get)(fetch),
     remove: curry(remove)(fetch),
     put: curry(put)(fetch)
+  },
+  noCredentials: {
+    post: curry(post)(fetch, noCredentials),
+    get: curry(get)(fetch, noCredentials),
+    remove: curry(remove)(fetch, noCredentials),
+    put: curry(put)(fetch, noCredentials)
   },
   post: curry(post)(fetch, {}),
   get: curry(get)(fetch, {}),
