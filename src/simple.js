@@ -1,6 +1,6 @@
 const fetch = require('isomorphic-fetch')
 const { curry, merge, keys } = require('../vendor/ramda')
-const { safep } = require('./util')
+const { safep, isSimpleProtocol } = require('./util')
 
 const defaultHeaders = {
   'Content-Type': 'application/json;charset=UTF-8'
@@ -143,22 +143,6 @@ function getResponseMeta (httpResponse) {
     statusText: httpResponse.statusText,
     headers: parseHeaders(httpResponse)
   }
-}
-
-function isSimpleProtocol (p) {
-  if (!p) {
-    return false
-  }
-
-  if (p.success === true && p.payload) {
-    return true
-  }
-
-  if (p.success === false && p.error) {
-    return true
-  }
-
-  return false
 }
 
 function notSuccessful (result) {
