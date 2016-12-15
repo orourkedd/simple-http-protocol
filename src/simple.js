@@ -117,7 +117,7 @@ const normalizeToProtocol = curry((httpResponse, success, payload) => {
   }
 })
 
-function buildSuccessResult (payload) {
+function buildSuccessResult (payload = null) {
   return {
     success: true,
     payload
