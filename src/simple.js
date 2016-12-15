@@ -100,8 +100,8 @@ function safeParseJson (s) {
     return JSON.parse(s)
   } catch (e) {
     //  instead of an empty string,
-    //  pass back undefined
-    return s || undefined
+    //  pass back null
+    return s || null
   }
 }
 

@@ -138,13 +138,16 @@ describe('simple protocol', () => {
 
         validateResult(result, {
           success: true,
-          payload: undefined,
+          payload: null,
           meta: {
             status: 204,
             statusText: 'No Content',
             headers: result.meta.headers
           }
         })
+
+        //  ensure that it is null, not undefined
+        deep(result.payload === null, true)
       }))
 
       it(`should handle http error`, co.wrap(function * () {
