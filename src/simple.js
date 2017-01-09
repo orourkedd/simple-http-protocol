@@ -1,4 +1,4 @@
-const fetch = require('isomorphic-fetch')
+const fetch = require('fetch-everywhere')
 const { curry, merge, keys } = require('../vendor/ramda')
 const { safep, isSimpleProtocol } = require('./util')
 
