@@ -1,4 +1,4 @@
-const { has } = require('../vendor/ramda')
+const { success, failure, isFailure, isProtocol } = require('simple-protocol-helpers')
 
 function safep (p, ctx) {
   return function () {
@@ -19,23 +19,10 @@ function safep (p, ctx) {
   }
 }
 
-function isSimpleProtocol (p) {
-  if (!p) {
-    return false
-  }
-
-  if (p.success === true && has('payload', p)) {
-    return true
-  }
-
-  if (p.success === false && has('error', p)) {
-    return true
-  }
-
-  return false
-}
-
 module.exports = {
   safep,
-  isSimpleProtocol
+  success,
+  failure,
+  isFailure,
+  isProtocol
 }

@@ -1,1 +1,0 @@
-./scripts/build -- src/curry.js src/merge.js src/keys.js src/has.js > dist/ramda.custom.js

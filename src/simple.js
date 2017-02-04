@@ -1,6 +1,8 @@
 const fetch = require('fetch-everywhere')
-const { curry, merge, keys } = require('../vendor/ramda')
-const { safep, isSimpleProtocol } = require('./util')
+const { safep, success, failure, isFailure, isProtocol } = require('./util')
+const assign = require('lodash/assign')
+const keys = require('lodash/keys')
+const curry = require('lodash/curry')
 
 const defaultHeaders = {
   'Content-Type': 'application/json;charset=UTF-8'
@@ -52,7 +54,7 @@ function makeRequestWithOptions (fetch, url, defaultOptions, fetchOptions) {
 }
 
 function mergeOptions (a, b) {
-  return merge(a, b)
+  return assign({}, a, b)
 }
 
 function makeRequest (fetch, url, options) {
@@ -64,8 +66,8 @@ function handleFetchResponse (result) {
   //  result should always be a simple protocol object.
   //  if fetch errors out, there is no
   //  http response and no http response meta
-  if (notSuccessful(result)) {
-    return merge(result, {
+  if (isFailure(result)) {
+    return assign({}, result, {
       meta: {}
     })
   }
@@ -105,34 +107,20 @@ function safeParseJson (s) {
   }
 }
 
-const normalizeToProtocol = curry((httpResponse, success, payload) => {
-  if (isSimpleProtocol(payload)) {
+const normalizeToProtocol = curry((httpResponse, isSuccess, payload) => {
+  if (isProtocol(payload)) {
     return addMetaToPayload(payload, httpResponse)
-  } else if (success) {
-    let successResult = buildSuccessResult(payload)
+  } else if (isSuccess) {
+    let successResult = success(payload)
     return addMetaToPayload(successResult, httpResponse)
   } else {
-    let errorResult = buildErrorResult(payload)
+    let errorResult = failure(payload)
     return addMetaToPayload(errorResult, httpResponse)
   }
 })
 
-function buildSuccessResult (payload = null) {
-  return {
-    success: true,
-    payload
-  }
-}
-
-function buildErrorResult (error) {
-  return {
-    success: false,
-    error
-  }
-}
-
 function addMetaToPayload (payload, httpResponse) {
-  return merge(payload, {
+  return assign({}, payload, {
     meta: getResponseMeta(httpResponse)
   })
 }
@@ -143,10 +131,6 @@ function getResponseMeta (httpResponse) {
     statusText: httpResponse.statusText,
     headers: parseHeaders(httpResponse)
   }
-}
-
-function notSuccessful (result) {
-  return result.success === false
 }
 
 function parseHeaders (httpResponse) {
