@@ -1,8 +1,14 @@
 const fetch = require('fetch-everywhere')
-const { safep, success, failure, isFailure, isProtocol } = require('./util')
-const assign = require('lodash/assign')
-const keys = require('lodash/keys')
-const curry = require('lodash/curry')
+const {
+  curry,
+  failure,
+  isFailure,
+  isProtocol,
+  keys,
+  merge,
+  safep,
+  success
+} = require('./util')
 
 const defaultHeaders = {
   'Content-Type': 'application/json;charset=UTF-8'
@@ -49,12 +55,8 @@ function remove (fetch, fetchOptions, url) {
 }
 
 function makeRequestWithOptions (fetch, url, defaultOptions, fetchOptions) {
-  let options = mergeOptions(defaultOptions, fetchOptions)
+  let options = merge(defaultOptions, fetchOptions)
   return makeRequest(fetch, url, options)
-}
-
-function mergeOptions (a, b) {
-  return assign({}, a, b)
 }
 
 function makeRequest (fetch, url, options) {
@@ -67,7 +69,7 @@ function handleFetchResponse (result) {
   //  if fetch errors out, there is no
   //  http response and no http response meta
   if (isFailure(result)) {
-    return assign({}, result, {
+    return merge(result, {
       meta: {}
     })
   }
@@ -120,8 +122,10 @@ const normalizeToProtocol = curry((httpResponse, isSuccess, payload) => {
 })
 
 function addMetaToPayload (payload, httpResponse) {
-  return assign({}, payload, {
-    meta: assign({}, payload.meta || {}, getResponseMeta(httpResponse))
+  const responseMeta = getResponseMeta(httpResponse)
+  const meta = merge(payload.meta, responseMeta)
+  return merge(payload, {
+    meta
   })
 }
 

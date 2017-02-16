@@ -1,4 +1,7 @@
 const { success, failure, isFailure, isProtocol } = require('simple-protocol-helpers')
+const assign = require('lodash/assign')
+const keys = require('lodash/keys')
+const curry = require('lodash/curry')
 
 function safep (p, ctx) {
   return function () {
@@ -19,10 +22,17 @@ function safep (p, ctx) {
   }
 }
 
+function merge (a, b) {
+  return assign({}, a || {}, b || {})
+}
+
 module.exports = {
   safep,
   success,
   failure,
   isFailure,
-  isProtocol
+  isProtocol,
+  merge,
+  keys,
+  curry
 }
