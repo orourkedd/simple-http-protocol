@@ -121,7 +121,7 @@ const normalizeToProtocol = curry((httpResponse, isSuccess, payload) => {
 
 function addMetaToPayload (payload, httpResponse) {
   return assign({}, payload, {
-    meta: getResponseMeta(httpResponse)
+    meta: assign({}, payload.meta || {}, getResponseMeta(httpResponse))
   })
 }
 
@@ -167,5 +167,6 @@ module.exports = {
   post: curry(post)(fetch, {}),
   get: curry(get)(fetch, {}),
   remove: curry(remove)(fetch, {}),
-  put: curry(put)(fetch, {})
+  put: curry(put)(fetch, {}),
+  addMetaToPayload
 }

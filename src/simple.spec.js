@@ -1,6 +1,7 @@
 const co = require('co')
 const deep = require('assert').deepEqual
 const { post, get, put, remove } = require('./simple').options
+const { addMetaToPayload } = require('./simple')
 const { startServer } = require('./test/server')
 const defaultJsonHeader = 'application/json;charset=UTF-8'
 const apiUrl = 'http://localhost:3001'
@@ -248,4 +249,13 @@ describe('simple protocol', () => {
     deep(result.error.name, 'FetchError')
     deep(result.meta, {})
   }))
+})
+
+describe('addMetaToPayload()', () => {
+  it('should merge meta', () => {
+    const payload = {foo: 'bar', meta: {bar: 'baz'}}
+    const httpResponse = {status: 200, statusText: 'good', headers: {_headers: {}}}
+    const result = addMetaToPayload(payload, httpResponse)
+    deep(result.meta.bar, 'baz')
+  })
 })
