@@ -14,7 +14,7 @@
   "dependencies": {
     "fetch-everywhere": "^1.0.5",
     "lodash": "^4.17.4",
-    "simple-protocol-helpers": "^0.2.0"
+    "simple-protocol-helpers": "^0.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
